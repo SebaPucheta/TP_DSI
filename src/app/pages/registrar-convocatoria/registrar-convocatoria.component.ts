@@ -29,6 +29,10 @@ export class RegistrarConvocatoriaComponent {
   private fechaCreacion: Date
   private sesion: Sesion
 
+
+
+  public AesDeri
+
   constructor (private categoriaService: CategoriaService,
     private authService: AuthService,
   ) {
