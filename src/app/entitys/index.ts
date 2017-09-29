@@ -1,0 +1,8 @@
+export { CargoLlamado } from './cargo-llamado'
+export { Carrera } from './carrera'
+export { Catedra } from './catedra'
+export { Categoria } from './categoria'
+export { Concurso } from './concurso'
+export { Facultad } from './facultad'
+export { Sesion } from './sesion'
+export { Usuario } from './usuario'

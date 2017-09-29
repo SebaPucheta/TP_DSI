@@ -1,0 +1,181 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="pull-right">
+        <label>Usuario: {{ usuario.getNombre() }}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 text-center title">
+      <h3><strong>Registrar Convocatoria a Concurso</strong></h3>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <label>Facultad</label>
+      <p>{{ facultad.getNombre() }}</p>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label>
+        Carrera
+        <i *ngIf="!carreraSeleccionada"
+          tooltip="Campo obligatorio"
+          class="fa fa-exclamation-circle"
+          aria-hidden="true">
+        </i>
+      </label>
+      <select class="form-control"
+          [(ngModel)]="carreraSeleccionada"
+          (ngModelChange)="tomarSeleccionCarrera($event)">
+        <option *ngFor="let carrera of carreras" [ngValue]="carrera">
+          {{ carrera.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group col-md-4" >
+      <label>
+        Catedra
+        <i *ngIf="!catedraSeleccionada && !!carreraSeleccionada"
+          tooltip="Campo obligatorio"
+          class="fa fa-exclamation-circle"
+          aria-hidden="true">
+        </i>
+      </label>
+      <select class="form-control"
+          [(ngModel)]="catedraSeleccionada"
+          (ngModelChange)="tomarSeleccionCatedra($event)"
+          [disabled]="!carreraSeleccionada">
+        <option *ngFor="let catedra of catedras" [ngValue]="catedra">
+          {{ catedra }}
+        </option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-md-4">
+      <label>
+        Fecha de Inscripción
+        <i *ngIf="!fechaEstimadaInscripcion"
+          tooltip="Campo obligatorio"
+          class="fa fa-exclamation-circle"
+          aria-hidden="true">
+        </i>
+      </label>
+      <datepicker-popup
+        [(ngModel)]="fechaEstimadaInscripcion"
+        (ngModelChange)="tomarFechaEstimadaInscripcion($event)">
+      </datepicker-popup>
+    </div>
+
+    <div class="form-group col-md-4">
+      <label>
+        Fecha de Concurso
+        <i *ngIf="!fechaEstimadaRealizacionConcurso"
+          tooltip="Campo obligatorio"
+          class="fa fa-exclamation-circle"
+          aria-hidden="true">
+        </i>
+      </label>
+      <datepicker-popup
+        [(ngModel)]="fechaEstimadaRealizacionConcurso"
+        (ngModelChange)="tomarFechaEstimadaConcurso($event)">
+      </datepicker-popup>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-8">
+      <label>
+        Categorias
+        <i *ngIf="cargosLlamados.length !> 0"
+          tooltip="Campo obligatorio"
+          class="fa fa-exclamation-circle"
+          aria-hidden="true">
+        </i>
+      </label>
+      <div class="thumbnail">
+        <div class="row">
+          <div class="form-group col-md-12 cargos">
+            <div class="row">
+
+              <div class="form-group col-md-4">
+                <label>Cargo</label>
+                <select
+
+                    class="form-control"
+                    [(ngModel)]="categoriaSeleccionada">
+                  <option *ngFor="let categoria of categorias" [ngValue]="categoria">
+                    {{ categoria.nombre }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label>Cantidad</label>
+                <input class="form-control" type="number" [(ngModel)]="cantidadPorCategoria">
+              </div>
+
+              <div class="col-md-4">
+                <label></label>
+                <button class="btn btn-success add" (click)="agregar(categoriaSeleccionada, cantidadPorCategoria)">
+                  <span class="fa fa-plus"></span>
+                  Agregar
+                </button>
+              </div>
+
+            </div>
+
+            <div class="row" *ngIf="cargosLlamados.length > 0">
+              <div class="col-md-12">
+                <table class="table table-bordered text-center" data-page-length='3'>
+                  <thead>
+                    <tr>
+                      <th class="col-xs-9 text-center">Cargo</th>
+                      <th class="col-xs-2 text-center">Cantidad</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let cargoLlamado of cargosLlamados; let i = index">
+                      <td class="text-center">{{ cargoLlamado.categoria.nombre }}</td>
+                      <td class="text-center">{{ cargoLlamado.cantidad }}</td>
+                      <td class="col-xs-1" (click)="eliminarCargo(i)">
+                        <a class="delete"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-danger pull-right"
+        (click)="limpiarForm()">Cancelar</button>
+      <button class="btn btn-primary pull-right submit"
+          [disabled]="!esValidoForm()"
+          (click)="confirmationModal.show()">
+        Aceptar
+      </button>
+    </div>
+  </div>
+</div>
+
+<confirmation-modal #confirmationModal
+  (action)=tomarConfirmacion($event)
+  message="¿Confirmar registración de concurso?">
+</confirmation-modal>

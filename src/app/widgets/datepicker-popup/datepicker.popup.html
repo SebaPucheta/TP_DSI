@@ -1,0 +1,22 @@
+<div>
+  <div class="input-group">
+    <input
+      [placeholder]="placeholder"
+      class="form-control"
+      [ngModel]="formatValue"
+      (ngModelChange)="onModelChange($event)"
+      (focus)="showPopup()"
+      (blur)="onBlur()"
+      (keyup)="onKeyup($event)"/>
+    <div class="input-group-addon div-icon" (click)="togglePopup(innerValue)">
+      <i class="fa fa-calendar"></i>
+    </div>
+  </div>
+  <datepicker class="popup"
+    [ngClass]="{ 'hide': !showDatepicker }"
+    [showWeeks]="false"
+    [maxDate]="innerMaxDate"
+    [ngStyle]="{ 'bottom': inputHeight }"
+    (selectionDone)="togglePopup($event)">
+  </datepicker>
+</div>
